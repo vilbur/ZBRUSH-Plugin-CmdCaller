@@ -1,0 +1,50 @@
+/*
+	----------- MINDFUCK WARNING -----------
+
+	IF SCRIPT LAODS and ISwitch is in same state as it`s init,
+
+	then ISWITCH DOES NOT WORK FOR FIRST TIME
+
+
+	This method check init state and force Iswitch to to desired state
+
+*/
+
+[IPalette, "~SWITCHTEST"]
+
+[VarDef, disbaled, 0] // ENABLED ON INIT
+[VarSet, disbaled, 1] // DISABLED ON INIT
+
+[VarDef, itworks, 0]
+
+
+[If, [IExists, "~SWITCHTEST:SwitchTest" ],
+
+   [If, [IGet, "~SWITCHTEST:SwitchTest" ] == [Var, disbaled]
+   , // THEN
+	   [Note, "IT WORKS",, 1]
+
+	   [VarSet, itworks, 1]
+   , // ELSE
+
+	   [Note, "IT IS BROKEN",, 1]
+
+	   [VarSet, itworks, 0]
+   ]
+]
+
+
+[ISwitch, "~SWITCHTEST:SwitchTest", [Var, disbaled], ""
+,
+	[Note, "Enable",, 0.5]
+,
+	[Note, "Disable",, 0.5]
+
+,,,	48]
+
+
+
+[If, ! [Var, itworks]
+, // THEN FORCE ISWITCH TO DESIRED STATE
+	[ISet, "~SWITCHTEST:SwitchTest", ! [IGet, "~SWITCHTEST:SwitchTest" ] ]
+]

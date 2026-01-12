@@ -1,0 +1,59 @@
+/**
+  *
+  */
+[VarSet, PLUGINNAME, 	"TEMPLATE"]
+[VarSet, PLUGINSUBMENU, 	"CmdCallerSubmenu"]
+
+
+[VarSet, PLUGINNENU,	[StrMerge, "~", PLUGINNAME ]]
+[VarSet, PLUGINDATAPATH,	[FileNameResolvePath, [StrMerge, PLUGINNAME, "Data" ]]]
+
+[VarSet, ZFILEUTILSDLL, [StrMerge, PLUGINDATAPATH, "\\ZFileUtils64.dll"] ]
+
+/*------------------------------------------------------------------------------
+
+	PRODUCTION: CONTROLS IN MENU, use this path to place controls in bmenu: PluginMenu > Control
+
+	[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":"]]
+
+--------------------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------------------
+
+	PRODUCTION: CONTROLS IN SUBMENU, use this path to place controls in submenu: Menu > Submenu > Control
+
+	[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":", PLUGINSUBMENU, ":"]]
+
+--------------------------------------------------------------------------------*/
+
+
+
+/*------------------------------------------------------------------------------
+
+	DEVELOPMENT: use this to show buttons in script pane, allow to be roladed on development
+
+	[VarSet, CONTROLSPATH,	"" ]
+
+--------------------------------------------------------------------------------*/
+
+	[VarSet, CONTROLSPATH,	"" ]
+
+
+[If, [StrLength, CONTROLSPATH ] > 0, // THEN
+	[IPalette,  PLUGINNENU ]]
+
+
+
+/* OPEN PLUGIN MENU HORTCUT BUTTONS  */
+[IButton, [StrMerge, CONTROLSHELPERS,"[ ",PLUGINNAME," ]"] , "Open: Plugin Menu ",	[IShow, PLUGINNENU ],, 96	,,,]
+
+
+<zscriptinsert, "CmdCallerData/UI-CmdCaller.txt">	// "./CmdCallerData/UI-CmdCaller.txt"
+
+/* zscriptinsert COMMAND IS EXECUTED EVEN IF IS COMENTED - It is divided to 2 lines because of that
+
+<
+zscriptinsert, "CmdCallerData/iSwitch/switchConfig.txt">	// "./CmdCallerData/iSwitch/switchConfig.txt"
+
+*/

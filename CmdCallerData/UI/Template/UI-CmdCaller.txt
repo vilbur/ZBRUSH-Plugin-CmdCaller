@@ -1,0 +1,14 @@
+[IPalette, PLUGINNENU ]
+[ISubPalette, [StrMerge, PLUGINNENU, ":", PLUGINSUBMENU ]]
+
+
+
+
+[IButton,  [StrMerge, CONTROLSPATH, "Run External File"], "",
+
+	[Note, "Run External File" ]
+
+	[VarSet, filepath, [StrMerge, PLUGINDATAPATH, "\test.ahk"] ]
+	[FileExecute, ZFILEUTILSDLL, "LaunchAppWithFile",  #filepath]
+	
+,,,,, 48]

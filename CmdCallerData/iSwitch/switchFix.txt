@@ -1,0 +1,71 @@
+/**
+
+	----------------- ISWITCH MINDFUCK NOTES ( HOW MUCH CODE IS NEEDED TO MAKE ONE FUCKING BUTTON WORKING ) -----------------
+
+	1. Script runs FIRST time on Zbrush startup, memory blocks are created in this time
+
+
+	2. Script runs EVERY time any control is fired, if scripth has been interrupted by another plugin
+		( If another plugin or script is used then first fire of control RUNS WHOLE SCRIPT AGAIN )
+
+
+	3. First click on iSwitch FIRES EVENT OF INIT STATE, NOT OPPOSITE STATE as should be excepted
+  		( if PRESSED, then FIRES PRESSED, if UNPRESSED, then fires UNPRESSED )
+
+		BUT THIS HAPPEN ONLY IF ISWITCH IS IN INIT STATE
+			( if INIT STATE is PRESSED and iSwitch is UNPRESSED, then works normaly  )
+
+
+*/
+
+
+/* INIT STATE OF SWITCH */
+[VarSet, INITSTATE, 0 ]
+//[VarSet, INITSTATE, 1 ]
+
+
+[VarDef, plugininitialized, [MemGetSize, INITSTATE ] > 0 ] // this avoid run code on startp of zbrush
+
+
+[If, ! [MemGetSize, INITSTATE ]
+,
+	/* DEFINE MEMORY BLOCKS */
+	[MVarDef, INITSTATE,	1 ]
+	[MVarDef, CURRENTSTATE,	1 ]
+
+	/* SET DEFAULTS */
+	[MVarSet, INITSTATE,	0, [Var, INITSTATE] ]
+	[MVarSet, CURRENTSTATE,	0, [Var, INITSTATE] ]
+]
+
+
+/*  UI */
+[VarSet, PLUGINNENU, "~CONFIGTEST"]
+
+[IPalette, PLUGINNENU ]
+
+[VarSet, switchbutton, [StrMerge, PLUGINNENU, ":", "Switch"] ]
+
+
+/* ----- SWITCH  BUTTON----- */
+[ISwitch, switchbutton, [MVarGet, INITSTATE, 0], ""
+, // PRESS
+
+	[Note, "Enable",, 0.5]
+
+	[MVarSet, CURRENTSTATE, 0, 1 ]
+
+, // UNPRESS
+
+	[Note, "Disable",, 0.5]
+
+	[MVarSet, CURRENTSTATE, 0, 0 ]
+
+,,,	48]
+
+
+/* FORCE SWITCH TO CORRECT STATE ON FIRST HIT, BUT NOT ON ZBRUSH STARTUP */
+[If, [Var, plugininitialized] && ([MVarGet, CURRENTSTATE, 0 ] == [MVarGet, INITSTATE, 0 ])
+, // THEN
+	[ISet,  switchbutton, ! [MVarGet, CURRENTSTATE, 0 ]  ]
+]

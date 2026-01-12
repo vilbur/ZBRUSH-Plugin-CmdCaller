@@ -1,0 +1,40 @@
+
+
+[VarDef, DATAFILE, [StrMerge, PLUGINDATAPATH, "\datafile.zvr"] ]
+
+[VarDef, DATALIST(20), ""]
+
+[VarDef, VALUELOADED, ""]
+
+
+/** dataFileSave
+  *
+  */
+[RoutineDef, dataFileSave
+,
+	//[Note, PLUGINDATAPATH ]
+	[VarSet, DATALIST([Var, index]), valuetosave ]
+	
+	[VarSave, DATALIST, DATAFILE ]
+	
+, // PARAMS
+	index, valuetosave
+]
+//[IButton, "dataFileSave()" , "", [RoutineCall, dataFileSave, 0, "Test value"] ]
+  
+  
+/** dataFileLoad
+  *
+  */
+[RoutineDef, dataFileLoad
+,
+	[VarLoad, DATALIST, DATAFILE ]			
+
+	[VarSet, VALUELOADED, [Var, DATALIST([Var, index]) ] ]
+	
+	[Note, VALUELOADED ]
+	
+, // PARAMS
+	index
+]
+//[IButton, "dataFileLoad()" , "", [RoutineCall, dataFileLoad, 0 ] ]

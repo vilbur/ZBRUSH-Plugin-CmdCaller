@@ -1,0 +1,20 @@
+
+
+/* GLOBAL HEIGHT OF CONTROLS */
+
+[VarSet, def,	24]
+[VarSet, min,	28]
+[VarSet, mid,	32]
+[VarSet, big,	48]
+
+/* GLOBAL WIDTH OF CONTROLS */
+[VarSet, FULL,	384]
+[VarSet, W1,	192]
+[VarSet, W2,	96]
+[VarSet, W3,	64]
+[VarSet, W4,	48]
+[VarSet, W6,	32]
+
+
+
+<zscriptinsert, "CmdCaller/UI-CmdCaller.txt">	// "./CmdCaller/UI-CmdCaller.txt"
