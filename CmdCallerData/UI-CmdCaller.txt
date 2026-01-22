@@ -1,37 +1,10 @@
 
 
-[If, [StrLength, CONTROLSPATH ] > 0, // THEN
-	[ISubPalette, [StrMerge, PLUGINNENU, ":", PLUGINSUBMENU ]]]
 
+/*------ TEST BUTTON  ------*/
+[IButton, [StrMerge, CONTROLSPATH, "Test"], "Test button of Template plugin"
+, //Commands
+	[Note, "Template plugin",, 0]
 
+,	/*Disabled*/,	/*Width*/,	/*Hotkey*/,	/*Icon*/,	/*Height*/]
 
-/* This button is fired up by DefaultZScript, it runs plugin first time and initialize it, otherwise ISwitch does not work on first click properly */
-//[IButton, , "",,1,,,,0]
-
-
-[ISwitch, [StrMerge, CONTROLSPATH, PLUGINNAME, "Init" ]
-,
-
-,
-//[IPress, ~CmdCaller:CmdCallerInit ]
-
-]
- //,,,,,,,2]
-
-[ISwitch, [StrMerge, CONTROLSPATH, PLUGINNAME, "Test" ], /* state */, "Tooltip"
-,
-	//Commands when pressed
-	//[IDisable, ~CmdCaller:CmdCallerInit ]
-,
-	//Commands when unpressed
-
-,	/*Disabled*/,	/*Width*/,	48 ]
-
-[IButton,  [StrMerge, CONTROLSPATH, "Run External File"], "",
-
-	[Note, "Run External File" ]
-
-	[VarSet, filepath, [StrMerge, PLUGINDATAPATH, "\test.ahk"] ]
-	[FileExecute, ZFILEUTILSDLL, "LaunchAppWithFile",  #filepath]
-
-,,,,, 48]

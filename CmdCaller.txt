@@ -1,8 +1,12 @@
+
+[VarSet, RELOADSCRIPTPATH, [FileNameResolvePath,	"ZBRUSH_ZStartup\ZPlugs64\CmdCaller-ExecuteCommand.txt" ]]
+
+
 /**
   *
   */
-[VarSet, PLUGINNAME, 	"TEMPLATE"]
-[VarSet, PLUGINSUBMENU, 	"CmdCallerSubmenu"]
+[VarSet, PLUGINNAME, 	"CmdCaller"]
+[VarSet, PLUGINSUBMENU, 	""]
 
 
 [VarSet, PLUGINNENU,	[StrMerge, "~", PLUGINNAME ]]
@@ -10,39 +14,19 @@
 
 [VarSet, ZFILEUTILSDLL, [StrMerge, PLUGINDATAPATH, "\\ZFileUtils64.dll"] ]
 
-/*------------------------------------------------------------------------------
+//[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":"]] // PRODUCTION: CONTROLS IN MENU
+//[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":", PLUGINSUBMENU, ":"]] // PRODUCTION: CONTROLS IN SUBMENU
 
-	PRODUCTION: CONTROLS IN MENU, use this path to place controls in bmenu: PluginMenu > Control
+[VarSet, CONTROLSPATH,	"" ] // DEVELOPMENT: LOAD AS SCRIPT
+	
 
-	[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":"]]
-
---------------------------------------------------------------------------------*/
-
-
-/*------------------------------------------------------------------------------
-
-	PRODUCTION: CONTROLS IN SUBMENU, use this path to place controls in submenu: Menu > Submenu > Control
-
-	[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":", PLUGINSUBMENU, ":"]]
-
---------------------------------------------------------------------------------*/
-
-
-
-/*------------------------------------------------------------------------------
-
-	DEVELOPMENT: use this to show buttons in script pane, allow to be roladed on development
-
-	[VarSet, CONTROLSPATH,	"" ]
-
---------------------------------------------------------------------------------*/
-
-	[VarSet, CONTROLSPATH,	"" ]
-
-
+/* CREATE MENU */ 
 [If, [StrLength, CONTROLSPATH ] > 0, // THEN
 	[IPalette,  PLUGINNENU ]]
 
+/* CREATE SUB MENU */ 
+[If, [StrLength, PLUGINSUBMENU ] > 0, // THEN
+	[ISubPalette, [StrMerge, PLUGINNENU, ":", PLUGINSUBMENU ]]]
 
 
 /* OPEN PLUGIN MENU HORTCUT BUTTONS  */
