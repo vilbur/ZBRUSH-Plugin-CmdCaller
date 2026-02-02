@@ -3,8 +3,8 @@
 SetWorkingDir %A_ScriptDir%
 
 /*
-Search parent folders for a specific AutoHotkey file
-and run it with current script name (without extension) as parameter.
+	Search parent folders for a command-executor.ahk
+	and run it with current script name (without extension) as parameter.
 */
 findAndRunParentScript(target_file_name)
 {
@@ -16,7 +16,8 @@ findAndRunParentScript(target_file_name)
 
         if (FileExist(candidate))
         {
-            Run, "%candidate%" "%current_name%"
+            ;Run, "%candidate%" "%current_name%"
+            Run, "%candidate%" "%A_ScriptFullPath%"
             return true
         }
 
