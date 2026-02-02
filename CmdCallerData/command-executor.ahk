@@ -1,51 +1,34 @@
 #NoEnv
 #SingleInstance Force
 
-/*
-Test receiver script.
-Shows received parameter from caller script.
-*/
-;if (0 > 0)
-;{
-    ;param = %1%
-    ;MsgBox, 64, Parameter Received, Caller script name:`n%param%
-;}
-;else
-;{
-;    MsgBox, 48, No Parameter, No parameter was passed.
-;}
 
+/**
+	CONVERT FILE PATH  TO ZBRUSH PATH
+  
+	E.G.:"Tool\Masking\ViewMask" >>> "Tool\Masking\ViewMask"
+  
+  
+	@param string command_path_file E.G.: "C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\INSTALLED\CmdCaller\CmdCallerData\Commands\Tool\Masking\ViewMask.ahk"
+  
+	@return string path to zbrush comman dderivated from command_path_file E.G.: "Tool:Masking:ViewMask"
 
-path_to_command = %1%
+ */
 
 ; Define the input path
-;path_to_command := "C:\GoogleDrive\ProgramsData\CG\ZBrush\Plugins\INSTALLED\CmdCaller\CmdCallerData\Commands\Tool\Masking\ViewMask.ahk"
+command_path_file = %1%
+
+split_directory := "Commands\" ;"
 
 ; 1. Remove .ahk extension
-; We replace ".ahk" with an empty string.
-PathNoExt := StrReplace(path_to_command, ".ahk", "")
+SplitPath, command_path_file, , dir, , name_no_ext
 
-; 2. Trim everything up to "Commands\" and keep only the part after
-; We look for the position of "Commands\" and extract the substring starting after it.
-Keyword := "Commands\" ;"
-Pos := InStr(PathNoExt, Keyword)
+path_no_ext := dir ":" name_no_ext
 
-if (Pos > 0)
-{
-    ; Calculate the starting position of the text AFTER "Commands\"
-    ; Pos is the start of "Commands\", so we add the length of "Commands\" (9) to get the end.
-    ResultPart := SubStr(PathNoExt, Pos + StrLen(Keyword))
-}
-else
-{
-    ResultPart := PathNoExt ; Keyword not found
-}
+; trim path up to split_directory
+Pos := InStr( path_no_ext, split_directory )
+
+trimmed_path := SubStr( path_no_ext, Pos + StrLen(split_directory))
 
 ; 3. Replace "/" with ":"
-; Note: The input path uses backslashes (\). The code below follows your instruction to replace forward slashes (/).
-; If you meant to replace backslashes (\) to create a formatted ID (e.g., Tool:Masking:ViewMask), use the second line below.
+command_path := RegExReplace( trimmed_path, "[\\/]+", ":" )
 
-FinalResult := StrReplace(ResultPart, "/", ":")
-
-; OPTIONAL: If you intended to replace backslashes (\) instead:
-FinalResultWithBackslashReplaced := StrReplace(ResultPart, "\", ":")
