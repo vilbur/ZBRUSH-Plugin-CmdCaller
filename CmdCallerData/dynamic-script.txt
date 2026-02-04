@@ -1,10 +1,24 @@
 [If, 1,
 
+	/* IF CONTROL EXISTS */ 
 	[If, [IExists, {interface_path} ]
 	, // THEN
 		
-	[IToggle, {interface_path} ]
-	, // ELSE
+		[VarSet, flags, [IGetFlags, {interface_path} ]]
+
+		[NoteBar, [StrMerge, "CONTROL FLAGS: ", flags ] ]
+		
+		/* PRESS IF IButton OR UNPRESSED ISwitch */ 
+		[If, flags == 8,
+			[IPress, {interface_path} ]
+		]
+		
+		/* UNPPRESS IF PRESSED ISwitch */ 
+		[If, flags == 9,
+			[IUnPress, {interface_path} ]
+		]
+		
+	, // ELSE ERROR MESSAGE IF CONTROL NOT EXISTS
 		[MessageOKCancel, [StrMerge, "ZBRUSH PLUGIN: DynamicCmd\n\nCONTROL WAS NOT FOUND: ", {interface_path}] ]
 	]
 ]
