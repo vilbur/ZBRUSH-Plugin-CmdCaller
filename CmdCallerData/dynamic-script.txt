@@ -1,0 +1,10 @@
+[If, 1,
+
+	[If, [IExists, {interface_path} ]
+	, // THEN
+		
+	[IToggle, {interface_path} ]
+	, // ELSE
+		[MessageOKCancel, [StrMerge, "ZBRUSH PLUGIN: DynamicCmd\n\nCONTROL WAS NOT FOUND: ", {interface_path}] ]
+	]
+]

@@ -1,6 +1,6 @@
 
 
-[VarSet, DYNAMICSCRIPTPATH, [FileNameResolvePath,	"ZBRUSH_ZScripts\dynamic-script.txt" ]]
+[VarSet, DYNAMICSCRIPTPATH, [FileNameResolvePath,	"C:/Windows/Temp/dynamic-script.txt" ]]
 
 
 /*------------------------------------------------------------------------------
