@@ -6,9 +6,11 @@
 , //Commands
 	//[Note, "Template plugin",, 0]
 	//[Note, DYNAMICSCRIPTPATH,, 0]
-	[FileNameSetNext, DYNAMICSCRIPTPATH ]
+	
+	//[FileNameSetNext, DYNAMICSCRIPTPATH ]
+	[FileNameSetNext, "c:\Program Files\Pixologic\ZBrush 2022\ZScripts\dynamic-script.txt" ]
 	
 	[IPress, ZScript:Load]
 	
-,	/*Disabled*/,	/*Width*/,	/*Hotkey*/,	/*Icon*/,	/*Height*/]
+,	/*Disabled*/,	/*Width*/,	35 /* Hotkey*/,	/*Icon*/,	/*Height*/]
 
