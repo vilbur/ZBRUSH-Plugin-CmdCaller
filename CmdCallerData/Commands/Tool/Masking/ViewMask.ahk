@@ -39,3 +39,4 @@ if (!findAndRunParentScript("command-executor.ahk"))
 {
     MsgBox, 16, Not Found, Target AutoHotkey file was not found in parent folders.
 }
+

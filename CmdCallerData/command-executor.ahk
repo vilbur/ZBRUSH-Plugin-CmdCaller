@@ -3,7 +3,7 @@
 
 
 /**
-	CONVERT FILE PATH  TO ZBRUSH PATH
+	CONVERT FILE PATH TO ZBRUSH PATH
   
 	E.G.:"Tool\Masking\ViewMask" >>> "Tool\Masking\ViewMask"
   

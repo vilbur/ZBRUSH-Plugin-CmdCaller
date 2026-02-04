@@ -2,9 +2,13 @@
 
 
 /*------ TEST BUTTON  ------*/
-[IButton, [StrMerge, CONTROLSPATH, "Test"], "Test button of Template plugin"
+[IButton, [StrMerge, CONTROLSPATH, "Execute Dynamic Command"], "Test button of Template plugin"
 , //Commands
-	[Note, "Template plugin",, 0]
-
+	//[Note, "Template plugin",, 0]
+	//[Note, DYNAMICSCRIPTPATH,, 0]
+	[FileNameSetNext, DYNAMICSCRIPTPATH ]
+	
+	[IPress, ZScript:Load]
+	
 ,	/*Disabled*/,	/*Width*/,	/*Hotkey*/,	/*Icon*/,	/*Height*/]
 

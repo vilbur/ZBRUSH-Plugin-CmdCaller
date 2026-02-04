@@ -1,24 +1,35 @@
 
-[VarSet, RELOADSCRIPTPATH, [FileNameResolvePath,	"ZBRUSH_ZStartup\ZPlugs64\CmdCaller-ExecuteCommand.txt" ]]
+
+[VarSet, DYNAMICSCRIPTPATH, [FileNameResolvePath,	"ZBRUSH_ZScripts\dynamic-script.txt" ]]
 
 
-/**
-  *
-  */
-[VarSet, PLUGINNAME, 	"CmdCaller"]
+/*------------------------------------------------------------------------------
+	PLUGIN NAME
+--------------------------------------------------------------------------------*/
+[VarSet, PLUGINNAME, 	"DynamicCmd"]
 [VarSet, PLUGINSUBMENU, 	""]
 
 
+/*------------------------------------------------------------------------------
+	DEFINE PATHS
+--------------------------------------------------------------------------------*/
 [VarSet, PLUGINNENU,	[StrMerge, "~", PLUGINNAME ]]
-[VarSet, PLUGINDATAPATH,	[FileNameResolvePath, [StrMerge, PLUGINNAME, "Data" ]]]
+[VarSet, PLUGINDATAPATH,	[FileNameResolvePath, [StrMerge, PLUGINNAME, "Data" ]]] // get path to PluginData folder
 
-[VarSet, ZFILEUTILSDLL, [StrMerge, PLUGINDATAPATH, "\\ZFileUtils64.dll"] ]
 
-//[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":"]] // PRODUCTION: CONTROLS IN MENU
-//[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":", PLUGINSUBMENU, ":"]] // PRODUCTION: CONTROLS IN SUBMENU
+/*------------------------------------------------------------------------------
+	PATH TO CONTROLS
+--------------------------------------------------------------------------------*/
 
-[VarSet, CONTROLSPATH,	"" ] // DEVELOPMENT: LOAD AS SCRIPT
-	
+[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":"]]	// PRODUCTION: CONTROLS IN MENU	E.G.: PluginName:IButton
+//[VarSet, CONTROLSPATH,	[StrMerge, PLUGINNENU, ":", PLUGINSUBMENU, ":"]]	// PRODUCTION: CONTROLS IN SUBMENU	E.G.: PluginName:SubPallete:IButton
+
+//[VarSet, CONTROLSPATH,	"" ]	// DEVELOPMENT: LOAD PLUGIN TO SCRIPT PANE
+
+
+/*------------------------------------------------------------------------------
+	CREATE MENUS
+--------------------------------------------------------------------------------*/
 
 /* CREATE MENU */ 
 [If, [StrLength, CONTROLSPATH ] > 0, // THEN
@@ -27,10 +38,17 @@
 /* CREATE SUB MENU */ 
 [If, [StrLength, PLUGINSUBMENU ] > 0, // THEN
 	[ISubPalette, [StrMerge, PLUGINNENU, ":", PLUGINSUBMENU ]]]
+	
+
+/*------ IMPORT ZFileUtils64 ------*/
+[VarSet, ZFILEUTILSDLL, [StrMerge, PLUGINDATAPATH, "\\ZFileUtils64.dll"] ]
 
 
-/* OPEN PLUGIN MENU HORTCUT BUTTONS  */
+
+
+/* OPEN PLUGIN MENU SHORTCUT BUTTON  */
 [IButton, [StrMerge, CONTROLSHELPERS,"[ ",PLUGINNAME," ]"] , "Open: Plugin Menu ",	[IShow, PLUGINNENU ],, 96	,,,]
+
 
 
 <zscriptinsert, "CmdCallerData/UI-CmdCaller.txt">	// "./CmdCallerData/UI-CmdCaller.txt"
