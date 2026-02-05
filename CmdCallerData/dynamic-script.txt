@@ -1,4 +1,8 @@
 [If, 1,
+	
+	[VarSet, new_line, [StrFromAsc, 13]]
+	
+	[VarSet, empty_line, [StrMerge, [StrFromAsc, 13], [StrFromAsc, 13]]]
 
 	/* IF CONTROL EXISTS */ 
 	[If, [IExists, {interface_path} ]
@@ -19,6 +23,6 @@
 		]
 		
 	, // ELSE ERROR MESSAGE IF CONTROL NOT EXISTS
-		[MessageOKCancel, [StrMerge, "ZBRUSH PLUGIN: DynamicCmd\n\nCONTROL WAS NOT FOUND: ", {interface_path}] ]
+		[MessageOKCancel, [StrMerge, "INTERFACE ITEM NOT FOUND", empty_line, "INTERFACE PATH:   ", {interface_path}], "ERROR ZBRUSH PLUGIN: DynamicCmd" ]
 	]
 ]
