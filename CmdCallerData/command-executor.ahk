@@ -96,6 +96,27 @@ copyTemplateAndReplacePlaceholders( $dynamic_script_template, $dynamic_script, $
 
 }
 
+/*
+	CREATE HARDLINK OF FILE WITHOUT EXTENSION - used in wacom center as label
+
+*/ 
+createHardlink( $command_file )
+{
+	SplitPath, $command_file, $file_name, $dir_path, file_ext, file_name_no_ext
+	
+	$link_path := $dir_path "\" file_name_no_ext ;;; "
+
+	
+	if ! FileExist($link_path)
+	{
+		; Use Windows mklink to create hardlink
+		$command := ComSpec " /c mklink /H """ $link_path """ """ $command_file """"
+		
+		RunWait, %$command%,, Hide
+	}
+}
+
+
 /*==============================================================================
 	CONFIGURATION SECTION - EDIT THESE VARIABLES
 ================================================================================
@@ -103,7 +124,7 @@ copyTemplateAndReplacePlaceholders( $dynamic_script_template, $dynamic_script, $
 
 /*------ GET APRAMETER ------
 */
-$command_file = %1%
+$command_file = %1% ;;; E.G.: "...\Tool\Masking\ViewMask.exe"
 
 /*------ PATHS ------
 */
@@ -118,39 +139,18 @@ $dynamic_script := "C:/Windows/Temp/" $filename
 
 
 
-; ==============================================================================
-; MAIN LOGIC
-; ==============================================================================
+/*==============================================================================
+	MAIN LOGIC
+================================================================================
+*/
 
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 $zbrush_command := % convertFilePathToCommand( $command_file )
 
-MsgBox,262144,zbrush_command, %$zbrush_command%,3
 
 copyTemplateAndReplacePlaceholders( $dynamic_script_template, $dynamic_script, $zbrush_command )
 
+createHardlink( $command_file )
 
-
-/*
-	CREATE HARDLINK OF FILE WITHOUT EXTENSION - used in wacom center as label
-
-*/ 
-
-SplitPath, $command_file, file_name, dir_path, file_ext, file_name_no_ext
-
-link_path := dir_path "\" file_name_no_ext ;;; "
-
-if ! FileExist(link_path)
-{
-	; Use Windows mklink to create hardlink
-	command := ComSpec " /c mklink /H """ link_path """ """ $command_file """"
-	
-	RunWait, %command%,, Hide
-}
-
-
-; Notify the user
-;MsgBox, 64, Success, File copied and updated successfully!`nSaved to: %$dynamic_script%
-
-;executeDynamicScript()
+executeDynamicScript()
