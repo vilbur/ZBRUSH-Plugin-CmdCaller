@@ -20,6 +20,7 @@ convertFilePathToCommand( $command_path_file )
 {
 	; Define the input path
 	;$command_path_file = %1%
+    $result := {}
 	
 	$split_directory := "Commands\" ;"
 	
@@ -35,26 +36,27 @@ convertFilePathToCommand( $command_path_file )
 	
 	; 3. Replace "/" with ":"
 	$command_path := RegExReplace( $trimmed_path, "[\\/]+", ":" )
-	
-	return % $command_path
-	
-}
 
-/**
- */
-executeDynamicScript(  )
-{
-	if( $zbrush_window	:= WinExist( "ahk_exe ZBrush.exe" ) )
-	{
-		WinActivate, ahk_exe ZBrush.exe
+    /*------------------------------------------------------------------------------
+	  
+		remove extension and split filename like "Mask-ViewMask.exe" by "-" character
+		
+	--------------------------------------------------------------------------------
+	*/
+    if InStr($name_no_ext, "_")
+    {
+        parts := StrSplit($name_no_ext, "_")
+		
+        $result["hardlink"] := parts[1]
+        $result["command"]  := parts[2]
+    }
+    else
+    {
+        $result["hardlink"] := $name_no_ext
+        $result["command"]  := $name_no_ext
+    }
 
-		sleep 100
-
-		/*
-			Execute command 
-		*/
-		Send, {End}
-	}
+    return $result
 }
 
 /**
@@ -100,19 +102,36 @@ copyTemplateAndReplacePlaceholders( $dynamic_script_template, $dynamic_script, $
 	CREATE HARDLINK OF FILE WITHOUT EXTENSION - used in wacom center as label
 
 */ 
-createHardlink( $command_file )
+createHardlink( $command_file, $hardlink_filename )
 {
-	SplitPath, $command_file, $file_name, $dir_path, file_ext, file_name_no_ext
+	SplitPath, $command_file, $file_name, $dir_path, $file_ext, $file_name_no_ext
 	
-	$link_path := $dir_path "\" file_name_no_ext ;;; "
+	$link_path = %$dir_path%\%$hardlink_filename%
 
-	
+
 	if ! FileExist($link_path)
 	{
 		; Use Windows mklink to create hardlink
 		$command := ComSpec " /c mklink /H """ $link_path """ """ $command_file """"
 		
 		RunWait, %$command%,, Hide
+	}
+}
+
+/**
+ */
+executeDynamicScript(  )
+{
+	if( $zbrush_window	:= WinExist( "ahk_exe ZBrush.exe" ) )
+	{
+		WinActivate, ahk_exe ZBrush.exe
+
+		sleep 100
+
+		/*
+			Execute command 
+		*/
+		Send, {End}
 	}
 }
 
@@ -146,11 +165,13 @@ $dynamic_script := "C:/Windows/Temp/" $filename
 
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-$zbrush_command := % convertFilePathToCommand( $command_file )
+$command_data := % convertFilePathToCommand( $command_file )
+;MsgBox,262144,command_data, % $command_data.command,3
+;MsgBox,262144,command_data, % $command_data.hardlink,3
 
 
-copyTemplateAndReplacePlaceholders( $dynamic_script_template, $dynamic_script, $zbrush_command )
+copyTemplateAndReplacePlaceholders( $dynamic_script_template, $dynamic_script, $command_data.command )
 
-createHardlink( $command_file )
+createHardlink( $command_file, $command_data.hardlink )
 
-executeDynamicScript()
+;executeDynamicScript()
